@@ -1,18 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
+﻿using System.Drawing;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HClient
 {
-    class HClient
+    public class HClient
     {
         private HttpClient client;
         public HClientResponse hResponse;
         public HClientImgResponse hImgResponse;
+        public HResponseService hResponseService;
 
         public HClient()
         {
@@ -26,6 +24,7 @@ namespace HClient
 
         private HttpClient CreateInstance(bool useProxy = false, WebProxy proxy = null)
         {
+            hResponseService = new HResponseService();
             var handler = new HttpClientHandler()
             {
                 UseCookies = false,
@@ -39,40 +38,24 @@ namespace HClient
 
         private (HttpClient, HttpContent) Create(HttpClient _client, HClientCookie _clientCookie, HClientHeader _clientHeader, string _json = null)
         {
-            HttpClient client = _client;
+            HttpClient client = null;
             HttpContent hContent = null;
-
-            client.DefaultRequestHeaders.Clear();
-            if (_clientCookie != null && _clientCookie.CookieDictionary != null)
-                foreach (var cookie in _clientCookie.CookieDictionary)
-                    client.DefaultRequestHeaders.TryAddWithoutValidation("Cookie", $"{cookie.Key}={cookie.Value}");
-
-            if (_clientHeader != null)
-            {
-                client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", _clientHeader.Accept);
-                client.DefaultRequestHeaders.TryAddWithoutValidation("Referer", _clientHeader.Referer);
-                client.DefaultRequestHeaders.TryAddWithoutValidation("UserAgent", _clientHeader.UserAgent);
-            }
-
-            if (_clientHeader != null && _clientHeader.headersKeyValuePairs != null)
-                foreach (var header in _clientHeader.headersKeyValuePairs)
-                    client.DefaultRequestHeaders.TryAddWithoutValidation(header.Key, header.Value);
-
+            client = HClientService.Create(_client, _clientCookie, _clientHeader);
             if (_json != null)
-            {
-                hContent = new StringContent(_json, Encoding.UTF8, "application/json");
-            }
-            else if (_json == null && _clientHeader != null && _clientHeader.postKeyValuePairs != null)
-            {
-                var param = "";
-                foreach (var ss in _clientHeader.postKeyValuePairs)
-                {
-                    param += $"{ss.Key}={ss.Value}&";
-                }
-                hContent = new StringContent(param, Encoding.UTF8, "application/x-www-form-urlencoded");
-            }
-
+                hContent = HContentService.Create(_json);
+            else
+                hContent = HContentService.Create(_clientHeader);
             return (client, hContent);
+        }
+
+        private (HttpClient, MultipartFormDataContent) Create(HttpClient _client, HClientCookie _clientCookie, HClientHeader _clientHeader, HMultipart multipart)
+        {
+            HttpClient client = null;
+            MultipartFormDataContent content = null;
+            client = HClientService.Create(_client, _clientCookie, _clientHeader);
+            content = HContentService.Create(multipart);
+
+            return (client, content);
         }
 
         public async Task<HClientResponse> Get(string _requestUrl, HClientCookie _clientCookie = null, HClientHeader _clientHeader = null)
@@ -86,7 +69,7 @@ namespace HClient
                 hResponse.Content = await response.Content.ReadAsStringAsync();
                 hResponse.ResponseCode = response.StatusCode;
                 hResponse.ResponsCodeString = response.StatusCode.ToString();
-                hResponse.SetCookies = GetSetCookie(response);
+                hResponse.SetCookies = hResponseService.GetSetCookies(response);
             }
             catch
             {
@@ -108,7 +91,7 @@ namespace HClient
                 hImgResponse.Image = Image.FromStream(stream);
                 hImgResponse.ResponseCode = response.StatusCode;
                 hImgResponse.ResponsCodeString = response.StatusCode.ToString();
-                hImgResponse.SetCookies = GetSetCookie(response);
+                hImgResponse.SetCookies = hResponseService.GetSetCookies(response);
             }
             catch
             {
@@ -129,7 +112,7 @@ namespace HClient
                 hResponse.Content = await response.Content.ReadAsStringAsync();
                 hResponse.ResponseCode = response.StatusCode;
                 hResponse.ResponsCodeString = response.StatusCode.ToString();
-                hResponse.SetCookies = GetSetCookie(response);
+                hResponse.SetCookies = hResponseService.GetSetCookies(response);
             }
             catch
             {
@@ -150,7 +133,7 @@ namespace HClient
                 hResponse.Content = await response.Content.ReadAsStringAsync();
                 hResponse.ResponseCode = response.StatusCode;
                 hResponse.ResponsCodeString = response.StatusCode.ToString();
-                hResponse.SetCookies = GetSetCookie(response);
+                hResponse.SetCookies = hResponseService.GetSetCookies(response);
             }
             catch
             {
@@ -159,16 +142,25 @@ namespace HClient
             return hResponse;
         }
 
-        public List<string> GetSetCookie(HttpResponseMessage message)
+        public async Task<HClientResponse> Post(string _requestUrl, HClientCookie _clientCookie = null, HClientHeader _clientHeader = null, HMultipart multipart = null)
         {
-            if (message == null || message.Headers == null)
-                return null;
-
-            var headerCollection = message.Headers;
-            if (headerCollection.TryGetValues("Set-Cookie", out IEnumerable<string> values))
-                return values.ToList();
-
-            return null;
+            try
+            {
+                hResponse = new HClientResponse();
+                var instance = Create(client, _clientCookie, _clientHeader, multipart);
+                client = instance.Item1;
+                var content = instance.Item2;
+                var response = await client.PostAsync(_requestUrl, content);
+                hResponse.Content = await response.Content.ReadAsStringAsync();
+                hResponse.ResponseCode = response.StatusCode;
+                hResponse.ResponsCodeString = response.StatusCode.ToString();
+                hResponse.SetCookies = hResponseService.GetSetCookies(response);
+            }
+            catch
+            {
+                hResponse.Content = null;
+            }
+            return hResponse;
         }
     }
 }

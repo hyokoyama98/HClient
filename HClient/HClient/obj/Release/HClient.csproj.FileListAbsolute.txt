@@ -21,3 +21,12 @@ E:\In\Project\HClient\HClient\obj\Release\HClient.csproj.Fody.CopyLocal.cache
 E:\In\Project\HClient\HClient\obj\Release\HClient.csproj.CopyComplete
 E:\In\Project\HClient\HClient\obj\Release\HClient.dll
 E:\In\Project\HClient\HClient\obj\Release\HClient.pdb
+C:\Users\user\Source\Repos\hyokoyama98\HClient\HClient\HClient\bin\Release\HClient.dll
+C:\Users\user\Source\Repos\hyokoyama98\HClient\HClient\HClient\bin\Release\HClient.pdb
+C:\Users\user\Source\Repos\hyokoyama98\HClient\HClient\HClient\bin\Release\System.ValueTuple.xml
+C:\Users\user\Source\Repos\hyokoyama98\HClient\HClient\HClient\obj\Release\HClient.csproj.CoreCompileInputs.cache
+C:\Users\user\Source\Repos\hyokoyama98\HClient\HClient\HClient\obj\Release\HClient.csproj.Fody.CopyLocal.cache
+C:\Users\user\Source\Repos\hyokoyama98\HClient\HClient\HClient\obj\Release\HClient.csproj.CopyComplete
+C:\Users\user\Source\Repos\hyokoyama98\HClient\HClient\HClient\obj\Release\HClient.dll
+C:\Users\user\Source\Repos\hyokoyama98\HClient\HClient\HClient\obj\Release\HClient.pdb
+C:\Users\user\Source\Repos\hyokoyama98\HClient\HClient\HClient\obj\Release\HClient.csprojAssemblyReference.cache

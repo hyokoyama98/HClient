@@ -2,7 +2,7 @@
 
 namespace HClient
 {
-    class HClientImgResponse : HClientResponse
+    public class HClientImgResponse : HClientResponse
     {
         public Image Image;
     }

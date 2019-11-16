@@ -2,7 +2,7 @@
 
 namespace HClient
 {
-    class HClientCookie
+    public class HClientCookie
     {
         public Dictionary<string, string> CookieDictionary;
 

@@ -3,7 +3,7 @@ using System.Net;
 
 namespace HClient
 {
-    class HClientResponse
+    public class HClientResponse
     {
         public string Content;
         public HttpStatusCode ResponseCode;

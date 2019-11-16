@@ -2,7 +2,7 @@
 
 namespace HClient
 {
-    class HClientHeader
+    public class HClientHeader
     {
         public Dictionary<string, string> headersKeyValuePairs;
         public Dictionary<string, string> postKeyValuePairs;

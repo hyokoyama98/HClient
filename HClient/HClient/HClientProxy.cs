@@ -2,7 +2,7 @@
 
 namespace HClient
 {
-    class HClientProxy
+    public class HClientProxy
     {
         public WebProxy wProxy;
 
