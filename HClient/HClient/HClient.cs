@@ -82,9 +82,10 @@ namespace HClient
                 var resultMessage = await client.GetAsync(_requestUrl);
                 hImgResponse = new HClientImgResponse(resultMessage);
             }
-            catch
+            catch(Exception ex)
             {
-                hImgResponse.Image = null;
+                hImgResponse = null;
+                throw new Exception(ex.Message);
             }
             return hImgResponse;
         }
