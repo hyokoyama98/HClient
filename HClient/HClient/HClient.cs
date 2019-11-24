@@ -10,7 +10,6 @@ namespace HClient
         private HttpClient client;
         public HClientResponse hResponse;
         public HClientImgResponse hImgResponse;
-        public HResponseService hResponseService;
 
         public HClient()
         {
@@ -24,7 +23,6 @@ namespace HClient
 
         private HttpClient CreateInstance(bool useProxy = false, WebProxy proxy = null)
         {
-            hResponseService = new HResponseService();
             var handler = new HttpClientHandler()
             {
                 UseCookies = false,

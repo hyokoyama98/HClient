@@ -12,7 +12,6 @@ namespace HClient
 
         public HClientImgResponse(HttpResponseMessage responseMessage) : base(responseMessage)
         {
-            responseService = new HResponseService();
             CreateInstance(responseMessage);
         }
 
@@ -27,7 +26,7 @@ namespace HClient
             Image = Image.FromStream(Stream);
             ResponseCode = ResponseMessage.StatusCode;
             ResponseCodeString = ResponseMessage.StatusCode.ToString();
-            SetCookies = responseService.GetSetCookies(ResponseMessage);
+            SetCookies = HResponseService.GetSetCookies(ResponseMessage);
         }
     }
 }

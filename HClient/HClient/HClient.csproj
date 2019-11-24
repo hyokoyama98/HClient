@@ -51,16 +51,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HClientService.cs" />
+    <Compile Include="Service\HClientService.cs" />
     <Compile Include="HClient.cs" />
     <Compile Include="HClientCookie.cs" />
     <Compile Include="HClientHeader.cs" />
     <Compile Include="HClientImgResponse.cs" />
     <Compile Include="HClientProxy.cs" />
     <Compile Include="HClientResponse.cs" />
-    <Compile Include="HContentService.cs" />
+    <Compile Include="Service\HContentService.cs" />
     <Compile Include="HMultipart.cs" />
-    <Compile Include="HResponseService.cs" />
+    <Compile Include="Service\HResponseService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

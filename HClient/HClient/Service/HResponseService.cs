@@ -6,7 +6,7 @@ namespace HClient
 {
     public class HResponseService
     {
-        public List<string> GetSetCookies(HttpResponseMessage message)
+        public static List<string> GetSetCookies(HttpResponseMessage message)
         {
             if (message == null || message.Headers == null)
                 return null;
