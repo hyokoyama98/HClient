@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -62,18 +62,15 @@ namespace HClient
         {
             try
             {
-                hResponse = new HClientResponse();
                 var instance = Create(client, _clientCookie, _clientHeader);
                 client = instance.Item1;
-                var response = await client.GetAsync(_requestUrl);
-                hResponse.Content = await response.Content.ReadAsStringAsync();
-                hResponse.ResponseCode = response.StatusCode;
-                hResponse.ResponsCodeString = response.StatusCode.ToString();
-                hResponse.SetCookies = hResponseService.GetSetCookies(response);
+                var resultMessage = await client.GetAsync(_requestUrl);
+                hResponse = new HClientResponse(resultMessage);
             }
-            catch
+            catch (Exception ex)
             {
-                hResponse.Content = null;
+                hResponse = null;
+                throw new Exception(ex.Message);
             }
             return hResponse;
         }
@@ -82,16 +79,10 @@ namespace HClient
         {
             try
             {
-                hImgResponse = new HClientImgResponse();
                 var instance = Create(client, _clientCookie, _clientHeader);
                 client = instance.Item1;
-                var response = await client.GetAsync(_requestUrl);
-                var stream = await response.Content.ReadAsStreamAsync();
-                hImgResponse.Content = null;
-                hImgResponse.Image = Image.FromStream(stream);
-                hImgResponse.ResponseCode = response.StatusCode;
-                hImgResponse.ResponsCodeString = response.StatusCode.ToString();
-                hImgResponse.SetCookies = hResponseService.GetSetCookies(response);
+                var resultMessage = await client.GetAsync(_requestUrl);
+                hImgResponse = new HClientImgResponse(resultMessage);
             }
             catch
             {
@@ -104,19 +95,16 @@ namespace HClient
         {
             try
             {
-                hResponse = new HClientResponse();
                 var instance = Create(client, _clientCookie, _clientHeader);
                 client = instance.Item1;
                 var content = instance.Item2;
-                var response = await client.PostAsync(_requestUrl, content);
-                hResponse.Content = await response.Content.ReadAsStringAsync();
-                hResponse.ResponseCode = response.StatusCode;
-                hResponse.ResponsCodeString = response.StatusCode.ToString();
-                hResponse.SetCookies = hResponseService.GetSetCookies(response);
+                var resultMessage = await client.PostAsync(_requestUrl, content);
+                hResponse = new HClientResponse(resultMessage);
             }
-            catch
+            catch (Exception ex)
             {
-                hResponse.Content = null;
+                hResponse = null;
+                throw new Exception(ex.Message);
             }
             return hResponse;
         }
@@ -125,19 +113,16 @@ namespace HClient
         {
             try
             {
-                hResponse = new HClientResponse();
                 var instance = Create(client, _clientCookie, _clientHeader, _json);
                 client = instance.Item1;
                 var content = instance.Item2;
-                var response = await client.PostAsync(_requestUrl, content);
-                hResponse.Content = await response.Content.ReadAsStringAsync();
-                hResponse.ResponseCode = response.StatusCode;
-                hResponse.ResponsCodeString = response.StatusCode.ToString();
-                hResponse.SetCookies = hResponseService.GetSetCookies(response);
+                var resultMessage = await client.PostAsync(_requestUrl, content);
+                hResponse = new HClientResponse(resultMessage);
             }
-            catch
+            catch (Exception ex)
             {
-                hResponse.Content = null;
+                hResponse = null;
+                throw new Exception(ex.Message);
             }
             return hResponse;
         }
@@ -146,19 +131,16 @@ namespace HClient
         {
             try
             {
-                hResponse = new HClientResponse();
                 var instance = Create(client, _clientCookie, _clientHeader, multipart);
                 client = instance.Item1;
                 var content = instance.Item2;
-                var response = await client.PostAsync(_requestUrl, content);
-                hResponse.Content = await response.Content.ReadAsStringAsync();
-                hResponse.ResponseCode = response.StatusCode;
-                hResponse.ResponsCodeString = response.StatusCode.ToString();
-                hResponse.SetCookies = hResponseService.GetSetCookies(response);
+                var resultMessage = await client.PostAsync(_requestUrl, content);
+                hResponse = new HClientResponse(resultMessage);
             }
-            catch
+            catch (Exception ex)
             {
-                hResponse.Content = null;
+                hResponse = null;
+                throw new Exception(ex.Message);
             }
             return hResponse;
         }

@@ -1,9 +1,33 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.IO;
+using System.Net.Http;
 
 namespace HClient
 {
     public class HClientImgResponse : HClientResponse
     {
         public Image Image;
+        public Stream Stream;
+
+        public HClientImgResponse(HttpResponseMessage responseMessage) : base(responseMessage)
+        {
+            responseService = new HResponseService();
+            CreateInstance(responseMessage);
+        }
+
+        protected new async void CreateInstance(HttpResponseMessage responseMessage)
+        {
+            if (responseMessage == null)
+                return;
+
+            ResponseMessage = responseMessage;
+            Content = null;
+            Stream = await ResponseMessage.Content.ReadAsStreamAsync();
+            Image = Image.FromStream(Stream);
+            ResponseCode = ResponseMessage.StatusCode;
+            ResponseCodeString = ResponseMessage.StatusCode.ToString();
+            SetCookies = responseService.GetSetCookies(ResponseMessage);
+        }
     }
 }
