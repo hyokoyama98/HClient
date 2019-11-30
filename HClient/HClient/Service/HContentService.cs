@@ -33,14 +33,11 @@ namespace HClient
 
         public static MultipartFormDataContent Create(HMultipart multipart)
         {
+            var disposition = EncodeHelper.CreateDisposition(multipart);
             var mContent = new MultipartFormDataContent(multipart.Boundary);
             var fileContent = new StreamContent(File.OpenRead(multipart.filePath));
             fileContent.Headers.ContentType = new MediaTypeHeaderValue(multipart.ContentType);
-            fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue(multipart.DispositionHeaderValue)
-            {
-                Name = multipart.DispositionHeaderName,
-                FileName = Path.GetFileName(multipart.DispositionHeaderFileName)
-            };
+            fileContent.Headers.Add("Content-Disposition", disposition);
             mContent.Add(fileContent);
 
             return mContent;
